@@ -1,0 +1,17 @@
+[project]
+name = "hartwell-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "mushtaq2314", email = "mohammedd.mushtaq@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+hartwell-backend = "hartwell_backend:main"
+
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
