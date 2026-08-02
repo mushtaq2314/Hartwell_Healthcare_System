@@ -17,7 +17,8 @@ build/
 dist/
 wheels/
 *.egg-info
-
+TRASH/
+**.db
 # Virtual environments
 .venv
 **/.venv/
