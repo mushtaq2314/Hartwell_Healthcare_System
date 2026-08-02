@@ -30,7 +30,7 @@ class PatientService:
             raise ValueError("Patient not found")
         return updated
     
-    def delete_patient(self, db: Session, patient_id: int) -> bool:
+    def delete_patient(self, db: Session, patient_id: int) -> None:
         deleted = self.repository.delete(db, patient_id)
         if not deleted:
             raise ValueError("Patient not found")

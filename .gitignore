@@ -22,7 +22,7 @@ TRASH/
 # Virtual environments
 .venv
 **/.venv/
-
+**/.env
 
 dist
 dist-ssr
@@ -38,3 +38,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+hartwell_backend/.env

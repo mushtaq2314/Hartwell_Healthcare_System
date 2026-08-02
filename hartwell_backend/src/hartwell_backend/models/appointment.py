@@ -1,10 +1,16 @@
-from datetime import datetime
+import enum
+from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, ForeignKey, String, Text
+from sqlalchemy import DateTime, ForeignKey, String, Text, Enum as SAEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from hartwell_backend.database import Base
 
+class AppointmentStatus(str, enum.Enum):
+    SCHEDULED = "Scheduled"
+    COMPLETED = "Completed"
+    CANCELLED = "Cancelled"
+    NO_SHOW = "No Show"
 
 class Appointment(Base):
     __tablename__ = "appointments"
@@ -23,9 +29,13 @@ class Appointment(Base):
         DateTime
     )
 
-    status: Mapped[str] = mapped_column(
-        String(30),
-        default="Scheduled",
+    status: Mapped[AppointmentStatus] = mapped_column(
+        SAEnum(
+            AppointmentStatus,
+            values_callable=lambda enum_cls: [member.value for member in enum_cls],
+            native_enum=False,
+        ),
+        default=AppointmentStatus.SCHEDULED,
     )
 
     reason: Mapped[str] = mapped_column(
@@ -45,6 +55,11 @@ class Appointment(Base):
     doctor = relationship(
         "Doctor",
         back_populates="appointments",
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.now(timezone.utc),
     )
 
     visit = relationship(

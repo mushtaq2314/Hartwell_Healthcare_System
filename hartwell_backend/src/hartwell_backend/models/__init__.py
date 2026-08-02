@@ -7,7 +7,7 @@ to allow Alembic autogeneration.
 from .patient import Patient
 from .department import Department
 from .doctor import Doctor
-from .appointment import Appointment
+from .appointment import Appointment, AppointmentStatus
 from .medication import Medication
 from .prescription import Prescription
 from .report import Report

@@ -7,7 +7,7 @@ from hartwell_backend.schemas.department import DepartmentCreate, DepartmentUpda
 class DepartmentRepository:
 
     def create(self, db: Session, department: DepartmentCreate) -> Department:
-        department_data = department.dict()
+        department_data = department.model_dump()
         db_department = Department(**department_data)
         db.add(db_department)
         db.commit()
@@ -24,8 +24,8 @@ class DepartmentRepository:
     def update(self, db: Session, department_id: int, department: DepartmentUpdate) -> Department | None:
         existing = self.find_by_id(db, department_id)
         if not existing:
-            return None
-        for key, value in department.dict(exclude_unset=True).items():
+            raise ValueError("Department not found")
+        for key, value in department.model_dump(exclude_unset=True).items():
             setattr(existing, key, value)
         db.commit()
         db.refresh(existing)

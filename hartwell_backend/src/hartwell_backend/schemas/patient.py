@@ -9,7 +9,7 @@ class PatientBase(BaseModel):
     dob: date
     gender: str
     email: EmailStr
-    phone: str | None = None
+    phone: str
     blood_group: str | None = None
     address: str | None = None
     emergency_contact: str | None = None

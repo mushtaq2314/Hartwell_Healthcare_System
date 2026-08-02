@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from hartwell_backend.database import get_db
-from hartwell_backend.schemas.patient import PatientCreate, PatientResponse, PatientUpdate
-from hartwell_backend.services.patient_service import PatientService
+from hartwell_backend.schemas import PatientCreate, PatientResponse, PatientUpdate
+from hartwell_backend.services import PatientService
 
 router = APIRouter(prefix="/patients", tags=["Patients"])
 

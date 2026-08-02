@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from hartwell_backend.database import get_db
-from hartwell_backend.schemas.department import DepartmentCreate, DepartmentResponse, DepartmentUpdate
-from hartwell_backend.services.department_service import DepartmentService
+from hartwell_backend.schemas import DepartmentCreate, DepartmentResponse, DepartmentUpdate
+from hartwell_backend.services import DepartmentService
 
 router = APIRouter(prefix="/departments", tags=["Departments"])
 

@@ -11,7 +11,7 @@ class DoctorBase(BaseModel):
     specialization: str
     experience_years: int
     email: EmailStr
-    phone: str | None = None
+    phone: str
     license_number: str
 
 

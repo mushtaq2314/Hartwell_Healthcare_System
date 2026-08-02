@@ -7,7 +7,7 @@ from hartwell_backend.schemas.doctor import DoctorCreate, DoctorUpdate
 class DoctorRepository:
 
     def create(self, db: Session, doctor: DoctorCreate) -> Doctor:
-        doctor_data = doctor.dict()
+        doctor_data = doctor.model_dump()
         db_doctor = Doctor(**doctor_data)
         db.add(db_doctor)
         db.commit()
@@ -24,8 +24,8 @@ class DoctorRepository:
     def update(self, db: Session, doctor_id: int, doctor: DoctorUpdate) -> Doctor | None:
         existing = self.find_by_id(db, doctor_id)
         if not existing:
-            return None
-        for key, value in doctor.dict(exclude_unset=True).items():
+            raise ValueError("Doctor record not found")
+        for key, value in doctor.model_dump(exclude_unset=True).items():
             setattr(existing, key, value)
         db.commit()
         db.refresh(existing)
