@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 from sqlalchemy import Boolean, Date, DateTime, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -26,7 +26,7 @@ class Visit(Base):
 
     visit_date: Mapped[datetime] = mapped_column(
         DateTime,
-        default=datetime.utcnow,
+        default=datetime.now(timezone.utc),
     )
 
     chief_complaint: Mapped[str] = mapped_column(

@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 from sqlalchemy import Date, DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -34,7 +34,7 @@ class Patient(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
-        default=datetime.utcnow,
+        default=datetime.now(timezone.utc),
     )
 
     # Relationships
