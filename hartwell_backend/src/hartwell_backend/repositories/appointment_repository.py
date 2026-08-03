@@ -6,8 +6,7 @@ from hartwell_backend.schemas import AppointmentCreate, AppointmentUpdate
 class AppointmentRepository:
     
     def create(self, db: Session, appointment: AppointmentCreate) -> Appointment:
-        appointment_data = appointment.model_dump()
-        db_appointment = Appointment(**appointment_data)
+        db_appointment = Appointment(**appointment.model_dump())
         db.add(db_appointment)
         db.commit()
         db.refresh(db_appointment)

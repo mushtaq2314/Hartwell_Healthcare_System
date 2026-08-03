@@ -4,12 +4,25 @@ SQLAlchemy ORM models.
 Models will be imported here
 to allow Alembic autogeneration.
 """
-from .patient import Patient
+from .appointment import Appointment, AppointmentStatus
 from .department import Department
 from .doctor import Doctor
-from .appointment import Appointment, AppointmentStatus
 from .medication import Medication
+from .patient import Patient
 from .prescription import Prescription
 from .report import Report
 from .timeline_event import TimelineEvent
 from .visit import Visit
+
+__all__ = [
+    "Appointment",
+    "AppointmentStatus",
+    "Department",
+    "Doctor",
+    "Medication",
+    "Patient",
+    "Prescription",
+    "Report",
+    "TimelineEvent",
+    "Visit",
+]

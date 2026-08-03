@@ -7,8 +7,7 @@ from hartwell_backend.schemas.doctor import DoctorCreate, DoctorUpdate
 class DoctorRepository:
 
     def create(self, db: Session, doctor: DoctorCreate) -> Doctor:
-        doctor_data = doctor.model_dump()
-        db_doctor = Doctor(**doctor_data)
+        db_doctor = Doctor(**doctor.model_dump())
         db.add(db_doctor)
         db.commit()
         db.refresh(db_doctor)

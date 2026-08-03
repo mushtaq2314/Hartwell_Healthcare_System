@@ -1,4 +1,9 @@
-from .patient import PatientCreate, PatientResponse, PatientUpdate
-from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate
+from .appointment import AppointmentCreate, AppointmentResponse, AppointmentUpdate
 from .department import DepartmentCreate, DepartmentResponse, DepartmentUpdate
-from .appointment import AppointmentCreate, AppointmentUpdate, AppointmentResponse
+from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate
+from .medication import MedicationCreate, MedicationResponse, MedicationUpdate
+from .patient import PatientCreate, PatientResponse, PatientUpdate
+from .prescription import PrescriptionCreate, PrescriptionResponse, PrescriptionUpdate
+from .report import ReportCreate, ReportResponse, ReportUpdate
+from .timeline_event import TimelineEventCreate, TimelineEventResponse
+from .visit import VisitCreate, VisitResponse, VisitUpdate

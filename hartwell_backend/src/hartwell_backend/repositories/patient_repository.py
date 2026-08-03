@@ -7,8 +7,7 @@ from hartwell_backend.schemas import PatientCreate, PatientUpdate
 class PatientRepository:
 
     def create(self, db: Session, patient: PatientCreate) -> Patient:
-        patient_data = patient.model_dump()
-        db_patient = Patient(**patient_data)
+        db_patient = Patient(**patient.model_dump())
         db.add(db_patient)
         db.commit()
         db.refresh(db_patient)

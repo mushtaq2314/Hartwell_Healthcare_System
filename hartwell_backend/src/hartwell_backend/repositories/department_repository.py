@@ -7,8 +7,7 @@ from hartwell_backend.schemas.department import DepartmentCreate, DepartmentUpda
 class DepartmentRepository:
 
     def create(self, db: Session, department: DepartmentCreate) -> Department:
-        department_data = department.model_dump()
-        db_department = Department(**department_data)
+        db_department = Department(**department.model_dump())
         db.add(db_department)
         db.commit()
         db.refresh(db_department)
