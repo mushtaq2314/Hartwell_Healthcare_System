@@ -2,12 +2,12 @@
 from sqlalchemy.orm import Session
 
 from hartwell_backend.models import Report
-from hartwell_backend.schemas import ReportCreate, ReportUpdate
+from hartwell_backend.schemas import ReportCreateDB, ReportUpdate
 
 
 class ReportRepository:
 
-    def create(self, db: Session, report: ReportCreate) -> Report:
+    def create(self, db: Session, report: ReportCreateDB) -> Report:
         db_report = Report(**report.model_dump())
         db.add(db_report)
         db.commit()

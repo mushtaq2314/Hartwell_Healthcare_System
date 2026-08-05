@@ -9,13 +9,14 @@ class ReportBase(BaseModel):
     visit_id: int | None = None
     title: str
     report_type: str
-    file_name: str
-    file_path: str
 
 
 class ReportCreate(ReportBase):
     pass
 
+class ReportCreateDB(ReportBase):
+    file_name: str
+    file_path: str
 
 class ReportUpdate(BaseModel):
     id: int

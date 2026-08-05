@@ -4,6 +4,6 @@ from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate
 from .medication import MedicationCreate, MedicationResponse, MedicationUpdate
 from .patient import PatientCreate, PatientResponse, PatientUpdate
 from .prescription import PrescriptionCreate, PrescriptionResponse, PrescriptionUpdate
-from .report import ReportCreate, ReportResponse, ReportUpdate
+from .report import ReportCreate, ReportResponse, ReportUpdate, ReportCreateDB
 from .timeline_event import TimelineEventCreate, TimelineEventResponse
 from .visit import VisitCreate, VisitResponse, VisitUpdate

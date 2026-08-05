@@ -1,9 +1,10 @@
 # services/report_service.py
 from sqlalchemy.orm import Session
+from fastapi import UploadFile
 
 from hartwell_backend.repositories import PatientRepository, ReportRepository, TimelineEventRepository, VisitRepository
-from hartwell_backend.schemas import ReportCreate, ReportUpdate, TimelineEventCreate
-
+from hartwell_backend.schemas import ReportCreate, ReportUpdate, TimelineEventCreate, ReportCreateDB
+from hartwell_backend.utils import save_report_file
 
 class ReportService:
 
@@ -13,13 +14,17 @@ class ReportService:
         self.visit_repository = VisitRepository()
         self.timeline_repository = TimelineEventRepository()
 
-    def create_report(self, db: Session, report: ReportCreate):
+    def create_report(self, db: Session, report: ReportCreate, file: UploadFile):
         if not self.patient_repository.find_by_id(db, report.patient_id):
             raise ValueError("Patient not found")
         if report.visit_id is not None and not self.visit_repository.find_by_id(db, report.visit_id):
             raise ValueError("Visit not found")
 
-        db_report = self.repository.create(db, report)
+        file_name, file_path = save_report_file(report.patient_id, file)
+        
+        report_db = ReportCreateDB(**report.model_dump(), file_name=file_name, file_path=file_path)
+        
+        db_report = self.repository.create(db, report_db)
 
         self.timeline_repository.create(
             db,

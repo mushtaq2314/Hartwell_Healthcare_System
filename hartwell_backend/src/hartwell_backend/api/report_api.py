@@ -1,5 +1,5 @@
 # api/report_api.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, Form, UploadFile
 from sqlalchemy.orm import Session
 
 from hartwell_backend.database import get_db
@@ -12,11 +12,26 @@ service = ReportService()
 
 
 @router.post("/", response_model=ReportResponse)
-def create_report(report: ReportCreate, db: Session = Depends(get_db)):
+def create_report(patient_id: int = Form(...),
+    visit_id: int | None = Form(None),
+    title: str = Form(...),
+    report_type: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+
+    report = ReportCreate(
+        patient_id=patient_id,
+        visit_id=visit_id,
+        title=title,
+        report_type=report_type,
+    )
+
     try:
-        return service.create_report(db, report)
+        return service.create_report(db, report, file)
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException( status_code=400, detail=str(e))
 
 
 @router.get("/", response_model=list[ReportResponse])

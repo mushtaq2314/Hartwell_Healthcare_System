@@ -19,6 +19,8 @@ wheels/
 *.egg-info
 TRASH/
 **.db
+**/*storage/
+
 # Virtual environments
 .venv
 **/.venv/
