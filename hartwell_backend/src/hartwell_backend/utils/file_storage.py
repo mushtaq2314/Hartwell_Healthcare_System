@@ -4,7 +4,7 @@ import shutil
 
 from fastapi import UploadFile
 
-REPORT_STORAGE = Path("storage/reports")
+from hartwell_backend.core.paths import REPORT_STORAGE
 
 
 def save_report_file(
@@ -19,9 +19,13 @@ def save_report_file(
 
     filename = f"{timestamp}_{file.filename}"
 
-    filepath = patient_folder / filename
+    # Absolute path (used for saving)
+    absolute_path = patient_folder / filename
 
-    with filepath.open("wb") as buffer:
+    with absolute_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    return filename, str(filepath)
+    # Relative path (stored in DB)
+    relative_path = Path(f"patient_{patient_id}") / filename
+
+    return filename, str(relative_path)

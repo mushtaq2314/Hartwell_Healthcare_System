@@ -33,6 +33,8 @@ class ReportResponse(ReportBase):
     ai_summary: str | None = None
     processing_status: str
     uploaded_at: datetime
+    file_name: str
+    file_path: str
 
     class Config:
         from_attributes = True
