@@ -73,3 +73,6 @@ class ReportProcessor:
                 report,
             )
             raise
+        
+        finally:
+            self.db.close()
