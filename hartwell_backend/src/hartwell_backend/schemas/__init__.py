@@ -7,3 +7,4 @@ from .prescription import PrescriptionCreate, PrescriptionResponse, Prescription
 from .report import ReportCreate, ReportResponse, ReportUpdate, ReportCreateDB
 from .timeline_event import TimelineEventCreate, TimelineEventResponse
 from .visit import VisitCreate, VisitResponse, VisitUpdate
+from .patient_chat import PatientChatRequest, PatientChatResponse

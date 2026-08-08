@@ -7,3 +7,4 @@ from .prescription_service import PrescriptionService
 from .report_service import ReportService
 from .timeline_event_service import TimelineEventService
 from .visit_service import VisitService
+from .patient_chat_service import PatientChatService
