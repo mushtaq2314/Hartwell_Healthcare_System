@@ -1,1 +1,2 @@
 from .patient_agent_factory import PatientAgentFactory
+from .doctor_agent_factory import DoctorAgentFactory

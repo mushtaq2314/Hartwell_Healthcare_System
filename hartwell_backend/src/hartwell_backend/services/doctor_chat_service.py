@@ -1,0 +1,40 @@
+from uuid import UUID
+
+from langchain_core.messages import HumanMessage
+
+from hartwell_backend.ai.agents import DoctorAgentFactory
+from hartwell_backend.ai.conversation import conversation_manager, ConversationOwnerType
+
+
+class DoctorChatService:
+    def start_conversation(self, doctor_id: int, message: str):
+        conversation = conversation_manager.create(owner_type=ConversationOwnerType.DOCTOR, owner_id=doctor_id)
+
+        agent = DoctorAgentFactory.create_doctor_agent(doctor_id)
+
+        conversation.chat_history.append(HumanMessage(content=message))
+
+        response = agent.invoke({"messages": conversation.chat_history})
+
+        conversation.chat_history = response["messages"]
+
+        return conversation, response["messages"][-1]
+
+    def continue_conversation(self, conversation_id: UUID, message: str):
+        conversation = conversation_manager.get(conversation_id)
+
+        if conversation is None:
+            raise ValueError("Conversation not found")
+
+        if conversation.owner_type != ConversationOwnerType.DOCTOR:
+            raise ValueError("Invalid conversation type")
+        
+        agent = DoctorAgentFactory.create_doctor_agent(conversation.owner_id)
+
+        conversation.chat_history.append(HumanMessage(content=message))
+
+        response = agent.invoke({"messages": conversation.chat_history})
+
+        conversation.chat_history = response["messages"]
+
+        return conversation, response["messages"][-1]

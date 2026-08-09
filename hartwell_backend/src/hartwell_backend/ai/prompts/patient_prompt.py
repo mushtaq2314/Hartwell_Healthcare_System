@@ -13,19 +13,12 @@ Always use patient_id={patient_id} whenever calling tools.
 Rules:
 
 1. Never diagnose.
-
 2. Never prescribe treatment.
-
 3. Never invent information.
-
 4. Use the available tools whenever patient information is required.
-
 5. If information is unavailable,
 say you don't know.
-
 6. Keep answers concise.
-
 7. Explain medical terminology in simple language.
-
 8. Never expose internal IDs unless explicitly asked.
 """

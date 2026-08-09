@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import tools_condition
 
-from hartwell_backend.ai.state.patient_state import PatientState
+from hartwell_backend.ai.state import PatientState
 from hartwell_backend.ai.nodes import create_chatbot_node
 from hartwell_backend.ai.nodes import create_tool_node
 
