@@ -35,6 +35,11 @@ class Doctor(Base):
         String(255),
         unique=True,
     )
+    
+    password_hash: Mapped[str] = mapped_column(
+    String(255),
+    nullable=False,
+    )
 
     phone: Mapped[str] = mapped_column(
         String(20)

@@ -16,8 +16,12 @@ class DoctorBase(BaseModel):
 
 
 class DoctorCreate(DoctorBase):
+    password: str
     pass
 
+class DoctorLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 class DoctorUpdate(BaseModel):
     first_name: str | None = None

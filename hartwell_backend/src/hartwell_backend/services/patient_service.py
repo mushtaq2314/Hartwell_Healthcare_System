@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from pydantic import EmailStr
 
 from hartwell_backend.models import Patient
 from hartwell_backend.repositories import PatientRepository
@@ -22,6 +23,14 @@ class PatientService:
         if not patient:
             raise ValueError("Patient not found")
 
+        return patient
+    
+    def get_patient_by_email(self, db: Session, email: EmailStr):
+        patient = self.repository.find_by_email(db, email)
+        
+        if not patient:
+            raise ValueError("Patient not found")
+        
         return patient
     
     def update_patient(self, db: Session, patient_id: int, patient: PatientUpdate) -> Patient:

@@ -16,8 +16,12 @@ class PatientBase(BaseModel):
     allergies: str | None = None
     chronic_conditions: str | None = None
 
+class PatientLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 class PatientCreate(PatientBase):
+    password: str
     pass
 
 

@@ -2,12 +2,13 @@ from sqlalchemy.orm import Session
 
 from hartwell_backend.models import Patient
 from hartwell_backend.schemas import PatientCreate, PatientUpdate
-
+from hartwell_backend.core.security import hash_password
 
 class PatientRepository:
 
     def create(self, db: Session, patient: PatientCreate) -> Patient:
-        db_patient = Patient(**patient.model_dump())
+        db_patient = Patient(**patient.model_dump(exclude={"password"}))
+        db_patient.password_hash = hash_password(patient.password)
         db.add(db_patient)
         db.commit()
         db.refresh(db_patient)
@@ -20,6 +21,9 @@ class PatientRepository:
     def find_by_id(self, db: Session, patient_id: int) -> Patient:
         return db.query(Patient).filter(Patient.id == patient_id).first()
         
+    def find_by_email(self, db: Session, email: int) -> Patient:
+        return db.query(Patient).filter(Patient.email == email).first()
+    
     def update(self, db: Session, patient_id: int, patient: PatientUpdate) -> Patient | None:
         existing = self.find_by_id(db, patient_id)
         if not existing:

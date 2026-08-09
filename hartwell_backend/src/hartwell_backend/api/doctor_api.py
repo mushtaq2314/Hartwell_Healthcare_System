@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from hartwell_backend.database import get_db
-from hartwell_backend.schemas import DoctorCreate, DoctorResponse, DoctorUpdate
+from hartwell_backend.schemas import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin
 from hartwell_backend.services import DoctorService
+from hartwell_backend.core.security import verify_password, create_access_token
 
 router = APIRouter(prefix="/doctors", tags=["Doctors"])
 
@@ -46,3 +47,20 @@ def delete_doctor(doctor_id: int, db: Session = Depends(get_db)):
         service.delete_doctor(db, doctor_id)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+@router.post("/login", status_code=200)
+def doctor_login(request: DoctorLogin, db: Session = Depends(get_db)):
+    doctor = service.get_doctor_by_email(db, request.email)
+
+    if doctor is None:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    if not verify_password(request.password, doctor.password_hash):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    token = create_access_token(subject=str(doctor.id), role="doctor")
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+    }

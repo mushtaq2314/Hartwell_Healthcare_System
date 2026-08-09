@@ -1,8 +1,8 @@
 from .appointment import AppointmentCreate, AppointmentResponse, AppointmentUpdate
 from .department import DepartmentCreate, DepartmentResponse, DepartmentUpdate
-from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate
+from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin
 from .medication import MedicationCreate, MedicationResponse, MedicationUpdate
-from .patient import PatientCreate, PatientResponse, PatientUpdate
+from .patient import PatientCreate, PatientResponse, PatientUpdate, PatientLogin
 from .prescription import PrescriptionCreate, PrescriptionResponse, PrescriptionUpdate
 from .report import ReportCreate, ReportResponse, ReportUpdate, ReportCreateDB
 from .timeline_event import TimelineEventCreate, TimelineEventResponse

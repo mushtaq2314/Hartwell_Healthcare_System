@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from hartwell_backend.api.patient_api import router as patient_router
 from hartwell_backend.api.doctor_api import router as doctor_router
@@ -31,6 +32,13 @@ app.include_router(prescription_router)
 app.include_router(report_router)
 app.include_router(timeline_event_router)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():
