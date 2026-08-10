@@ -13,16 +13,4 @@ from .prescription import Prescription
 from .report import Report
 from .timeline_event import TimelineEvent
 from .visit import Visit
-
-__all__ = [
-    "Appointment",
-    "AppointmentStatus",
-    "Department",
-    "Doctor",
-    "Medication",
-    "Patient",
-    "Prescription",
-    "Report",
-    "TimelineEvent",
-    "Visit",
-]
+from .admin import Admin

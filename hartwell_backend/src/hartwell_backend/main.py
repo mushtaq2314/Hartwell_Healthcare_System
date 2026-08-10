@@ -12,6 +12,7 @@ from hartwell_backend.api.report_api import router as report_router
 from hartwell_backend.api.timeline_event_api import router as timeline_event_router
 from hartwell_backend.api.patient_chat_api import router as patient_chat_router
 from hartwell_backend.api.doctor_chat_api import router as doctor_chat_router
+from hartwell_backend.api.admin_api import router as admin_router
 
 from hartwell_backend.database import Base, engine
 
@@ -31,6 +32,7 @@ app.include_router(visit_router)
 app.include_router(prescription_router)
 app.include_router(report_router)
 app.include_router(timeline_event_router)
+app.include_router(admin_router)
 
 app.add_middleware(
     CORSMiddleware,

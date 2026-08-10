@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from hartwell_backend.database import get_db
+from hartwell_backend.api.deps import require_role
 from hartwell_backend.schemas import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin
 from hartwell_backend.services import DoctorService
 from hartwell_backend.core.security import verify_password, create_access_token
@@ -32,7 +33,6 @@ def get_doctor(doctor_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=str(e))
     
 
-
 @router.put("/{doctor_id}", response_model=DoctorResponse)
 def update_doctor(doctor_id: int, doctor: DoctorUpdate, db: Session = Depends(get_db)):
     try:
@@ -42,7 +42,7 @@ def update_doctor(doctor_id: int, doctor: DoctorUpdate, db: Session = Depends(ge
 
 
 @router.delete("/{doctor_id}", status_code=204)
-def delete_doctor(doctor_id: int, db: Session = Depends(get_db)):
+def delete_doctor(doctor_id: int, db: Session = Depends(get_db), admin=Depends(require_role("admin"))):
     try:
         service.delete_doctor(db, doctor_id)
     except ValueError as e:
@@ -63,4 +63,5 @@ def doctor_login(request: DoctorLogin, db: Session = Depends(get_db)):
     return {
         "access_token": token,
         "token_type": "bearer",
+        "user_id": doctor.id
     }
