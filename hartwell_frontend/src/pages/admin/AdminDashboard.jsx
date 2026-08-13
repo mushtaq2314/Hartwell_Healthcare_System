@@ -203,7 +203,7 @@ export default function AdminDashboard() {
 
                         <button
                             onClick={() => navigate("/admin/patients")}
-                            className="p-6 text-left bg-white border rounded-xl hover:border-blue-400 hover:shadow-sm transition"
+                            className="p-6 text-left bg-white border rounded-xl hover:border-blue-400 hover:shadow-sm transition cursor-pointer"
                         >
                             <h4 className="font-semibold text-gray-800">
                                 Manage Patients
@@ -216,7 +216,7 @@ export default function AdminDashboard() {
 
                         <button
                             onClick={() => navigate("/admin/doctors")}
-                            className="p-6 text-left bg-white border rounded-xl hover:border-blue-400 hover:shadow-sm transition"
+                            className="p-6 text-left bg-white border rounded-xl hover:border-blue-400 hover:shadow-sm transition cursor-pointer"
                         >
                             <h4 className="font-semibold text-gray-800">
                                 Manage Doctors

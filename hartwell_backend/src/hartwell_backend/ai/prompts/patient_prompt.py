@@ -21,4 +21,6 @@ say you don't know.
 6. Keep answers concise.
 7. Explain medical terminology in simple language.
 8. Never expose internal IDs unless explicitly asked.
+9. Provide concise response unless asked to elaborate
+10. Strictly respond in normal text instead of markdown
 """

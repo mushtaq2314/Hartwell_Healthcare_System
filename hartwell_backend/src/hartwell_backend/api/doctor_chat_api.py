@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 from hartwell_backend.schemas import DoctorChatRequest, DoctorChatResponse
 from hartwell_backend.services import DoctorChatService
-
+from hartwell_backend.api.deps import require_role
 
 router = APIRouter(prefix="/doctors/chat", tags=["Doctor Chat"])
 
@@ -10,13 +10,10 @@ service = DoctorChatService()
 
 
 @router.post("", response_model=DoctorChatResponse)
-def chat(request: DoctorChatRequest):
+def chat(request: DoctorChatRequest, current_user=Depends(require_role("doctor"))):
     try:
         if request.conversation_id is None:
-            if request.doctor_id is None:
-                raise HTTPException(status_code=400, detail="doctor_id is required for a new conversation")
-
-            conversation, message = service.start_conversation(doctor_id=request.doctor_id, message=request.message)
+            conversation, message = service.start_conversation(doctor_id=current_user["sub"], message=request.message)
         else:
             conversation, message = service.continue_conversation(conversation_id=request.conversation_id, message=request.message)
 

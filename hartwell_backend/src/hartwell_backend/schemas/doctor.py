@@ -35,6 +35,16 @@ class DoctorUpdate(BaseModel):
     license_number: str | None = None
 
 
+class DoctorGeneralResponse(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    department_id: int
+    qualification: str
+    specialization: str
+    experience_years: int
+    department: str
+
 class DoctorResponse(DoctorBase):
     id: int
     created_at: datetime

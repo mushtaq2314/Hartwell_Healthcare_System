@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 
 class DoctorChatRequest(BaseModel):
-    doctor_id: int
     conversation_id: UUID | None = None
     message: str
 

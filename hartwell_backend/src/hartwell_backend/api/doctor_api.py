@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from hartwell_backend.database import get_db
 from hartwell_backend.api.deps import require_role
-from hartwell_backend.schemas import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin
+from hartwell_backend.schemas import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin, DoctorGeneralResponse
 from hartwell_backend.services import DoctorService
 from hartwell_backend.core.security import verify_password, create_access_token
 
@@ -20,7 +20,7 @@ def create_doctor(doctor: DoctorCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/", response_model=list[DoctorResponse])
+@router.get("/", response_model=list[DoctorGeneralResponse])
 def get_doctors(db: Session = Depends(get_db)):
     return service.get_all_doctors(db)
 

@@ -15,6 +15,7 @@ class OllamaClient:
         self,
         system_prompt: str,
         user_prompt: str,
+        images: list = None
     ) -> str:
         response = ollama.chat(
             model=self.model,
@@ -27,6 +28,7 @@ class OllamaClient:
                 {
                     "role": "user",
                     "content": user_prompt,
+                    "images": images
                 },
             ],
             options={

@@ -1,6 +1,6 @@
 from .appointment import AppointmentCreate, AppointmentResponse, AppointmentUpdate
 from .department import DepartmentCreate, DepartmentResponse, DepartmentUpdate
-from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin
+from .doctor import DoctorCreate, DoctorResponse, DoctorUpdate, DoctorLogin, DoctorGeneralResponse
 from .medication import MedicationCreate, MedicationResponse, MedicationUpdate
 from .patient import PatientCreate, PatientResponse, PatientUpdate, PatientLogin
 from .prescription import PrescriptionCreate, PrescriptionResponse, PrescriptionUpdate

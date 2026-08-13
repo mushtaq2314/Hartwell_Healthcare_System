@@ -3,19 +3,34 @@ from pydantic import EmailStr
 
 from hartwell_backend.models import Doctor
 from hartwell_backend.repositories import DoctorRepository
-from hartwell_backend.schemas import DoctorCreate, DoctorUpdate
-
+from hartwell_backend.schemas import DoctorCreate, DoctorUpdate, DoctorGeneralResponse
+from hartwell_backend.repositories import DepartmentRepository
 
 class DoctorService:
 
     def __init__(self):
         self.repository = DoctorRepository()
+        self.department_repository = DepartmentRepository()
 
     def create_doctor(self, db: Session, doctor: DoctorCreate) -> Doctor:
         return self.repository.create(db, doctor)
 
-    def get_all_doctors(self, db: Session) -> list[Doctor]:
-        return self.repository.find_all(db)
+    def get_all_doctors(self, db: Session) -> list[DoctorGeneralResponse]:
+        doctors = self.repository.find_all(db)
+        result = []
+        for doctor in doctors:
+            result.append(DoctorGeneralResponse(
+                id=doctor.id,
+                first_name=doctor.first_name,
+                last_name=doctor.last_name,
+                qualification=doctor.qualification,
+                specialization=doctor.specialization,
+                experience_years=doctor.experience_years,
+                department_id=doctor.department_id,
+                department=doctor.department.name
+            ))
+            
+        return result
 
     def get_doctor(self, db: Session, doctor_id: int) -> Doctor:
         doctor = self.repository.find_by_id(db, doctor_id)

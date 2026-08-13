@@ -33,9 +33,9 @@ class ReportProcessor:
                 report,
             )
 
-            pdf_path = REPORT_STORAGE / db_report.file_path
-            text = DocumentReader.read_document(str(pdf_path))
-
+            report_path = REPORT_STORAGE / db_report.file_path
+            text = DocumentReader.read_document(str(report_path))
+            
             report.extracted_text = text
             report.processing_status = "Summarizing"
             self.report_repository.update(
@@ -43,8 +43,13 @@ class ReportProcessor:
                 report_id,
                 report,
             )
-
-            summary = self.summary_service.generate_summary(text)
+            
+            if len(text) < 100:
+                print("Found no extracted text, delegating to medgemma...")
+                summary = self.summary_service.generate_summary_from_report([report_path])
+                pass
+            else:
+                summary = self.summary_service.generate_summary(text)
 
             report.ai_summary = summary
             report.processing_status = "Completed"
