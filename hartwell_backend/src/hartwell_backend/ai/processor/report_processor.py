@@ -41,7 +41,6 @@ class ReportProcessor:
 
             for page in document_reader_output:
                 if page.image_path:
-                    print("Found a medical image")
                     text += f"\n===== PAGE {page.page_number} =====\n<MedicalImage>\n\n"
                     image_paths.append(page.image_path)
                     continue
@@ -58,8 +57,6 @@ class ReportProcessor:
             
             summary = self.summary_service.generate_summary(text, image_paths)
 
-            print("Summary received:")
-            print(summary)
             report.ai_summary = summary
             report.processing_status = "Completed"
             self.report_repository.update(

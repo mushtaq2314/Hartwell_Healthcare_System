@@ -1,9 +1,10 @@
-# repositories/report_repository.py
+import os
+
 from sqlalchemy.orm import Session
 
 from hartwell_backend.models import Report
 from hartwell_backend.schemas import ReportCreateDB, ReportUpdate
-
+from hartwell_backend.core.paths import REPORT_STORAGE
 
 class ReportRepository:
 
@@ -41,6 +42,11 @@ class ReportRepository:
         db_report = self.find_by_id(db, report_id)
         if not db_report:
             return False
+        report_file_path = REPORT_STORAGE / db_report.file_path
+        try:
+            os.remove(report_file_path)
+        except:
+            print("Error deleting report.")    
         db.delete(db_report)
         db.commit()
         return True

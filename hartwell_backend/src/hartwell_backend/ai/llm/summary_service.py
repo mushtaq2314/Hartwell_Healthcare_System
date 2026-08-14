@@ -1,4 +1,4 @@
-import base64
+import base64, shutil
 
 from .ollama_client import OllamaClient
 from hartwell_backend.ai.prompts import build_summarizer_prompt
@@ -15,12 +15,15 @@ class SummaryService:
         if image_paths:
             for image_path in image_paths:
                 with open(str(image_path), "rb") as img_file:
-                    print("Converting medical image to base64")
                     img_data = img_file.read()
                     img_base64 = base64.b64encode(img_data).decode('utf-8')
                     b64_images.append(img_base64)
-        print("Sending prompt:")
-        print(prompt)
+                    
+            # Cleaning up images' directory
+            parent_path = image_paths[0].parent
+            if parent_path.parent.name == "images":
+                shutil.rmtree(parent_path)
+
         return self.client.generate(
             prompt,
             b64_images
