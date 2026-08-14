@@ -1,7 +1,11 @@
 from pathlib import Path
-
+from pydantic import BaseModel
 import easyocr
 
+class OCROutput(BaseModel):
+    is_medical_image: bool
+    image_path: Path
+    extracted_text: str
 
 class OCRService:
     """
@@ -27,10 +31,10 @@ class OCRService:
 
             print("EasyOCR loaded.")
 
-    def extract_text(self, image_paths: list[Path]) -> str:
+    def extract_text(self, image_paths: list[Path]) -> list[OCROutput]:
         pages = []
 
-        for image_path in image_paths:
+        for idx, image_path in enumerate(image_paths):
             print(f"OCR -> {image_path.name}")
 
             result = OCRService._reader.readtext(
@@ -40,6 +44,6 @@ class OCRService:
             )
 
             page_text = "\n".join(result)
-            pages.append(page_text)
+            pages.append(OCROutput(is_medical_image=len(page_text.strip()) < 100, image_path=image_path, extracted_text=page_text))
 
-        return "\n\n".join(pages)
+        return pages

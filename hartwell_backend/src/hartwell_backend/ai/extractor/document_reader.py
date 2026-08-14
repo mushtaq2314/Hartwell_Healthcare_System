@@ -1,5 +1,5 @@
 from .image_extractor import ImageExtractor
-from .ocr_service import OCRService
+from .ocr_service import OCRService, OCROutput
 from .pdf_parser import PDFParser
 
 
@@ -21,11 +21,12 @@ class DocumentReader:
     """
 
     @staticmethod
-    def read_document(pdf_path: str) -> str:
+    def read_document(pdf_path: str) -> str | list[OCROutput]:
         text = PDFParser.extract_text(pdf_path)
 
         if len(text.strip()) > 100:
             print("✓ Digital PDF detected.")
+            print("Detected text:", text)
             return text
 
         print("No digital text found.")

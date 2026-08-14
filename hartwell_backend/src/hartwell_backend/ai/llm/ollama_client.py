@@ -7,30 +7,25 @@ class OllamaClient:
 
     Every AI service should use this class.
     """
-
     def __init__(self, model: str = "medgemma1.5:4b"):
         self.model = model
 
-    def generate(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        images: list = None
-    ) -> str:
+    def generate(self, user_prompt: str, images: list = None, system_prompt: str = None) -> str:
+        messages = [
+            {
+                "role": "user",
+                "content": user_prompt,
+                "images": images
+            }
+        ]
+        
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+            
         response = ollama.chat(
             model=self.model,
             think=False,
-            messages=[
-                {
-                    "role": "system",
-                    "content": system_prompt,
-                },
-                {
-                    "role": "user",
-                    "content": user_prompt,
-                    "images": images
-                },
-            ],
+            messages=messages,
             options={
                 "temperature": 0.2,
             },

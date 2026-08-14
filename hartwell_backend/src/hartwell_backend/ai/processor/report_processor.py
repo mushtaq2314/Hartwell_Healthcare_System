@@ -14,6 +14,9 @@ class ReportProcessor:
         self.timeline_repository = TimelineEventRepository()
         self.summary_service = SummaryService()
         self.db = SessionLocal()
+        
+    def build_summarizer_input(self):
+        pass
 
     def process(
         self,
@@ -34,7 +37,22 @@ class ReportProcessor:
             )
 
             report_path = REPORT_STORAGE / db_report.file_path
-            text = DocumentReader.read_document(str(report_path))
+            document_reader_output = DocumentReader.read_document(str(report_path))
+            
+            text = ""
+            image_paths = []
+            
+            if isinstance(document_reader_output, str): 
+                text = document_reader_output
+            else:
+                for idx, page in enumerate(document_reader_output):
+                    text += f'''
+                    ===== PAGE {idx} =====\n
+                    '''
+                    text += page.extracted_text
+                    if page.is_medical_image:
+                        print("Found a medical image")
+                        image_paths.append(page.image_path)
             
             report.extracted_text = text
             report.processing_status = "Summarizing"
@@ -44,13 +62,10 @@ class ReportProcessor:
                 report,
             )
             
-            if len(text) < 100:
-                print("Found no extracted text, delegating to medgemma...")
-                summary = self.summary_service.generate_summary_from_report([report_path])
-                pass
-            else:
-                summary = self.summary_service.generate_summary(text)
+            summary = self.summary_service.generate_summary(text, image_paths)
 
+            print("Summary received:")
+            print(summary)
             report.ai_summary = summary
             report.processing_status = "Completed"
             self.report_repository.update(
