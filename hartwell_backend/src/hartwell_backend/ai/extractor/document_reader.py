@@ -11,10 +11,6 @@ class DocumentReaderOutput(BaseModel):
     text: str | None = None
     image_path: Path | None = None
 
-    @property
-    def has_text(self) -> bool:
-        return bool(self.text and self.text.strip())
-
 class DocumentReader:
     """
     Reads medical reports from PDF/JPG/JPEG/PNG.
@@ -49,7 +45,7 @@ class DocumentReader:
         elif suffix in cls.SUPPORTED_IMAGE_EXTENSIONS:
             result = cls._read_image(document_path)
             result.page_number = 1
-            return result
+            return [result]
         else:
             raise ValueError(f"Unsupported document type: {suffix}. Supported types: PDF, JPG, JPEG, PNG.")
 
@@ -79,7 +75,6 @@ class DocumentReader:
     def _read_image(cls, image_path: Path) -> DocumentReaderOutput:
         ocr = OCRService()
         text = ocr.extract_text(image_path)
-
         if cls._has_enough_text(text):
             return DocumentReaderOutput(text=text)
 
