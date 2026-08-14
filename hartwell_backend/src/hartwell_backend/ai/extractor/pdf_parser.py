@@ -1,24 +1,21 @@
-from pathlib import Path
-
 import fitz
 
 
 class PDFParser:
-    """
-    Reads digital PDFs.
-    Does NOT perform OCR.
-    Returns extracted text.
-    """
+    """Reads digital text from PDF pages. Does not perform OCR."""
+
     @staticmethod
-    def extract_text(pdf_path: str) -> str:
+    def get_page_count(pdf_path: str) -> int:
         document = fitz.open(pdf_path)
-        pages = []
+        try:
+            return len(document)
+        finally:
+            document.close()
 
-        for page in document:
-            text = page.get_text().strip()
-            if text:
-                pages.append(text)
-
-        document.close()
-
-        return "\n\n".join(pages)
+    @staticmethod
+    def extract_page_text(pdf_path: str, page_number: int) -> str:
+        document = fitz.open(pdf_path)
+        try:
+            return document.load_page(page_number).get_text().strip()
+        finally:
+            document.close()

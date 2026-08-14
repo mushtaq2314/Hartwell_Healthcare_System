@@ -18,10 +18,7 @@ class ReportProcessor:
     def build_summarizer_input(self):
         pass
 
-    def process(
-        self,
-        report_id: int,
-    ):
+    def process(self, report_id: int):
         db_report = self.report_repository.find_by_id(self.db, report_id)
         report = ReportUpdate(id=report_id)
 
@@ -37,22 +34,19 @@ class ReportProcessor:
             )
 
             report_path = REPORT_STORAGE / db_report.file_path
-            document_reader_output = DocumentReader.read_document(str(report_path))
+            document_reader_output = DocumentReader.read_document(report_path)
             
             text = ""
             image_paths = []
-            
-            if isinstance(document_reader_output, str): 
-                text = document_reader_output
-            else:
-                for idx, page in enumerate(document_reader_output):
-                    text += f'''
-                    ===== PAGE {idx} =====\n
-                    '''
-                    text += page.extracted_text
-                    if page.is_medical_image:
-                        print("Found a medical image")
-                        image_paths.append(page.image_path)
+
+            for page in document_reader_output:
+                if page.image_path:
+                    print("Found a medical image")
+                    text += f"\n===== PAGE {page.page_number} =====\n<MedicalImage>\n\n"
+                    image_paths.append(page.image_path)
+                    continue
+                text += f"\n===== PAGE {page.page_number} =====\n"
+                text += page.text
             
             report.extracted_text = text
             report.processing_status = "Summarizing"

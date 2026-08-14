@@ -1,32 +1,24 @@
 from pathlib import Path
-
 import fitz
 
 
 class ImageExtractor:
-    """
-    Converts every page of a PDF into PNG images.
-    Output:
-        storage/images/report_<report_id>/page_1.png
-    """
+    """Converts PDF pages into PNG images."""
+
     @staticmethod
-    def extract_images(pdf_path: str) -> list[Path]:
-        pdf_path = Path(pdf_path)
-        report_name = pdf_path.stem
-
-        output_dir = (pdf_path.parent.parent.parent/ "images"/ report_name)
+    def _get_output_dir(pdf_path: Path) -> Path:
+        output_dir = pdf_path.parent.parent.parent / "images" / pdf_path.stem
         output_dir.mkdir(parents=True, exist_ok=True)
+        return output_dir
 
+    @staticmethod
+    def extract_page(pdf_path: str, page_number: int) -> Path:
+        pdf_path = Path(pdf_path)
+        image_path = ImageExtractor._get_output_dir(pdf_path) / f"page_{page_number + 1}.png"
         document = fitz.open(pdf_path)
-        image_paths = []
-
-        for page_number in range(len(document)):
-            page = document.load_page(page_number)
-            pix = page.get_pixmap(matrix=fitz.Matrix(4, 4))
-            image_path = (output_dir/ f"page_{page_number + 1}.png")
-
+        try:
+            pix = document.load_page(page_number).get_pixmap(matrix=fitz.Matrix(4, 4), alpha=False)
             pix.save(image_path)
-            image_paths.append(image_path)
-
-        document.close()
-        return image_paths
+        finally:
+            document.close()
+        return image_path
