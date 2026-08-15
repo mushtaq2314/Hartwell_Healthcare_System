@@ -9,7 +9,7 @@ from hartwell_backend.core.security import verify_password, create_access_token
 router = APIRouter(prefix="/admins", tags=["Admins"])
     
 @router.post("/login", status_code=200)
-def patient_login(request: AdminLogin, db: Session = Depends(get_db)):
+def admin_login(request: AdminLogin, db: Session = Depends(get_db)):
     admin = db.query(Admin).filter(Admin.email == request.email).first()
 
     if admin is None:

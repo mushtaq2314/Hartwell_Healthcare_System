@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import {
     getDoctor,
@@ -1455,11 +1457,9 @@ function PatientDetailModal({
                                                             AI Summary
                                                         </p>
 
-                                                        <p className="mt-2 line-clamp-4 text-sm leading-6 text-gray-600">
-                                                            {
-                                                                report.ai_summary
-                                                            }
-                                                        </p>
+                                                        <div className="mt-2 line-clamp-4 text-sm leading-6 text-gray-600 prose max-w-full">
+                                                            <ReactMarkdown remarkPlugins={[remarkGfm]} children={report.ai_summary} />
+                                                        </div>
 
                                                     </div>
                                                 )}
@@ -1587,7 +1587,7 @@ function ReportModal({
             }}
         >
 
-            <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl border border-gray-200">
 
                 <div className="flex items-start justify-between">
 
@@ -1646,8 +1646,8 @@ function ReportModal({
                                 AI Summary
                             </h3>
 
-                            <div className="mt-2 rounded-xl bg-blue-50 p-5 text-sm leading-7 text-gray-700 whitespace-pre-wrap">
-                                {report.ai_summary}
+                            <div className="mt-2 rounded-xl bg-blue-50 p-5 text-sm leading-7 text-gray-700 prose max-w-full">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]} children={report.ai_summary} />
                             </div>
 
                         </div>
@@ -1726,11 +1726,10 @@ function Tab({
     return (
         <button
             onClick={onClick}
-            className={`rounded-lg px-5 py-2.5 text-sm font-medium transition ${
-                active
-                    ? "bg-blue-500 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-            }`}
+            className={`rounded-lg px-5 py-2.5 text-sm font-medium transition ${active
+                ? "bg-blue-500 text-white"
+                : "text-gray-600 hover:bg-gray-100"
+                }`}
         >
             {children}
         </button>
@@ -1805,8 +1804,8 @@ function InfoBlock({
 
             <div className="mt-1 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
                 {value === null ||
-                value === undefined ||
-                value === ""
+                    value === undefined ||
+                    value === ""
                     ? "—"
                     : String(value)}
             </div>

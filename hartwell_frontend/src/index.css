@@ -1,0 +1,55 @@
+/* Minimal prose styles for Markdown rendering (used by ReactMarkdown)
+	 This provides basic typography for headings, lists, and code blocks
+	 without requiring the Tailwind Typography plugin. */
+
+.prose {
+	color: #374151; /* gray-700 */
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+	margin-top: 0.75rem;
+	margin-bottom: 0.5rem;
+	font-weight: 700;
+	color: #111827; /* gray-900 */
+}
+
+.prose p {
+	margin-top: 0.25rem;
+	margin-bottom: 0.5rem;
+}
+
+.prose ul,
+.prose ol {
+	margin-top: 0.25rem;
+	margin-bottom: 0.5rem;
+	padding-left: 1.25rem;
+}
+
+.prose li {
+	margin-top: 0.25rem;
+}
+
+.prose code {
+	background-color: #f3f4f6; /* gray-100 */
+	padding: 0.125rem 0.25rem;
+	border-radius: 0.25rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
+	font-size: 0.875em;
+}
+
+.prose pre {
+	background-color: #111827; /* gray-900 */
+	color: #f9fafb; /* gray-50 */
+	padding: 0.75rem;
+	border-radius: 0.5rem;
+	overflow: auto;
+}
+
+.prose blockquote {
+	border-left: 4px solid #e5e7eb; /* gray-200 */
+	padding-left: 1rem;
+	color: #6b7280; /* gray-500 */
+}

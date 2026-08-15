@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import {
     uploadPatientReport,
@@ -390,6 +392,17 @@ export default function PatientDashboard() {
                     report={selectedReport}
                     onClose={() => setShowReportModal(false)}
                 />
+            )}
+
+            {/* Floating AI Chat button */}
+            {!showChat && (
+                <button
+                    onClick={() => setShowChat(true)}
+                    aria-label="Open AI Chat"
+                    className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 shadow-lg hover:bg-blue-600"
+                >
+                    <ChatIcon />
+                </button>
             )}
 
 
@@ -812,7 +825,7 @@ function AppointmentsSection({
                                         }
                                     />
 
-                                    {(function() {
+                                    {(function () {
                                         const normalized = String(appointment.status || "").toLowerCase();
                                         const canCancel = /pending|scheduled|confirmed/.test(normalized);
                                         const id = appointment.id ?? appointment.appointment_id;
@@ -929,9 +942,9 @@ function ReportsSection({
                                         AI Summary
                                     </p>
 
-                                    <p className="mt-2 text-sm leading-6 text-gray-600">
-                                        {report.ai_summary}
-                                    </p>
+                                    <div className="mt-2 line-clamp-4 text-sm leading-6 text-gray-600 prose max-w-full">
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]} children={report.ai_summary} />
+                                    </div>
 
                                 </div>
                             )}
@@ -2053,67 +2066,89 @@ function ReportModal({ report, onClose }) {
 
     return (
         <Modal onClose={onClose}>
-            <h2 className="text-xl font-semibold text-gray-800">Report Details</h2>
-
-            <div className="mt-4 space-y-3">
-                <div>
-                    <p className="text-sm text-gray-500">Title</p>
-                    <p className="text-sm text-gray-800">{report.title || '—'}</p>
+            <div className="flex max-h-[90vh] flex-col rounded-2xl bg-white p-4">
+                {/* Header */}
+                <div className="shrink-0">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                        Report Details
+                    </h2>
                 </div>
 
-                <div>
-                    <p className="text-sm text-gray-500">Type</p>
-                    <p className="text-sm text-gray-800">{report.report_type || '—'}</p>
+                {/* Scrollable content */}
+                <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-2 space-y-3">
+                    <div>
+                        <p className="text-sm text-gray-500">Title</p>
+                        <p className="text-sm text-gray-800">
+                            {report.title || '—'}
+                        </p>
+                    </div>
+
+                    <div>
+                        <p className="text-sm text-gray-500">Type</p>
+                        <p className="text-sm text-gray-800">
+                            {report.report_type || '—'}
+                        </p>
+                    </div>
+
+                    {report.ai_summary && (
+                        <div>
+                            <p className="text-sm text-gray-500">AI Summary</p>
+                            <div className="mt-2 text-sm text-gray-800 prose max-w-full border border-gray-200 px-4 rounded-lg bg-blue-50">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]} children={report.ai_summary} />
+                            </div>
+                        </div>
+                    )}
+
+                    <div>
+                        <p className="text-sm text-gray-500">
+                            Processing Status
+                        </p>
+                        <p className="text-sm text-gray-800">
+                            {report.processing_status || '—'}
+                        </p>
+                    </div>
+
+                    {report.uploaded_at && (
+                        <div>
+                            <p className="text-sm text-gray-500">Uploaded</p>
+                            <p className="text-sm text-gray-800">
+                                {formatDate(report.uploaded_at)}
+                            </p>
+                        </div>
+                    )}
+
+                    {report.file_name && (
+                        <div>
+                            <p className="text-sm text-gray-500">File</p>
+                            <p className="text-sm text-gray-800 break-all">
+                                {report.file_name}
+                            </p>
+                        </div>
+                    )}
+
+                    {report.file_path && (
+                        <div>
+                            <a
+                                href={report.file_path}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-block rounded-md bg-gray-50 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                            >
+                                Open file
+                            </a>
+                        </div>
+                    )}
                 </div>
 
-                {report.ai_summary && (
-                    <div>
-                        <p className="text-sm text-gray-500">AI Summary</p>
-                        <p className="text-sm text-gray-800">{report.ai_summary}</p>
-                    </div>
-                )}
-
-                <div>
-                    <p className="text-sm text-gray-500">Processing Status</p>
-                    <p className="text-sm text-gray-800">{report.processing_status || '—'}</p>
+                {/* Footer */}
+                <div className="mt-6 shrink-0 flex justify-end border-t border-gray-100 pt-4">
+                    <button
+                        onClick={onClose}
+                        className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    >
+                        Close
+                    </button>
                 </div>
-
-                {report.uploaded_at && (
-                    <div>
-                        <p className="text-sm text-gray-500">Uploaded</p>
-                        <p className="text-sm text-gray-800">{formatDate(report.uploaded_at)}</p>
-                    </div>
-                )}
-
-                {report.file_name && (
-                    <div>
-                        <p className="text-sm text-gray-500">File</p>
-                        <p className="text-sm text-gray-800">{report.file_name}</p>
-                    </div>
-                )}
-
-                {report.file_path && (
-                    <div>
-                        <a
-                            href={report.file_path}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="rounded-md bg-gray-50 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100"
-                        >
-                            Open file
-                        </a>
-                    </div>
-                )}
-
-            </div>
-
-            <div className="mt-6 flex justify-end">
-                <button
-                    onClick={onClose}
-                    className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                    Close
-                </button>
             </div>
         </Modal>
     );

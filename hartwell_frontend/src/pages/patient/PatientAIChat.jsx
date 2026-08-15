@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { sendPatientChat } from "../../services/patientService";
 
 export default function PatientAIChat({ open, onClose }) {
@@ -186,11 +188,11 @@ export default function PatientAIChat({ open, onClose }) {
                                     <div
                                         className={
                                             message.role === "user"
-                                                ? "max-w-[80%] rounded-2xl rounded-br-md bg-blue-500 px-4 py-3 text-sm leading-6 text-white"
-                                                : "max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-4 py-3 text-sm leading-6 text-gray-700 shadow-sm"
+                                                ? "max-w-[80%] rounded-2xl rounded-br-md bg-blue-500 px-4 py-3 text-sm leading-6 text-white prose font-semibold"
+                                                : "max-w-[85%] rounded-2xl rounded-bl-md border border-gray-200 bg-white px-4 py-3 text-sm leading-6 text-gray-700 shadow-sm prose"
                                         }
                                     >
-                                        {message.content}
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]} children={message.content} />
                                     </div>
                                 </div>
                             ))}
