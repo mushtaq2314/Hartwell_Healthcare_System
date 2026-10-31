@@ -1416,6 +1416,11 @@ function AppointmentModal({
     const [reason, setReason] = useState("");
     const [error, setError] = useState("");
 
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const nextMinute = new Date(now.getTime() + 60_000);
+    const minimumTime = `${String(nextMinute.getHours()).padStart(2, "0")}:${String(nextMinute.getMinutes()).padStart(2, "0")}`;
+
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -1426,6 +1431,11 @@ function AppointmentModal({
 
         if (!date || !time) {
             setError("Please select a date and time.");
+            return;
+        }
+
+        if (new Date(`${date}T${time}`) < new Date()) {
+            setError("Please select a present or future date and time.");
             return;
         }
 
@@ -1501,6 +1511,7 @@ function AppointmentModal({
                     type="date"
                     value={date}
                     onChange={setDate}
+                    min={today}
                     required
                 />
 
@@ -1510,6 +1521,7 @@ function AppointmentModal({
                     type="time"
                     value={time}
                     onChange={setTime}
+                    min={date === today ? minimumTime : undefined}
                     required
                 />
 
@@ -1818,6 +1830,7 @@ function Field({
     type = "text",
     placeholder = "",
     required = false,
+    min,
 }) {
     return (
         <div>
@@ -1831,6 +1844,7 @@ function Field({
                 value={value ?? ""}
                 placeholder={placeholder}
                 required={required}
+                min={min}
                 onChange={(e) =>
                     onChange(e.target.value)
                 }
