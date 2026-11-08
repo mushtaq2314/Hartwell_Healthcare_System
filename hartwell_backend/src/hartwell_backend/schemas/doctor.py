@@ -13,6 +13,12 @@ class DoctorBase(BaseModel):
     email: EmailStr
     phone: str
     license_number: str
+    
+    def __repr__(self) -> str:
+        return str(self.model_dump(exclude={"password"}))
+    
+    def __str__(self) -> str:
+        return self.__repr__()
 
 
 class DoctorCreate(DoctorBase):

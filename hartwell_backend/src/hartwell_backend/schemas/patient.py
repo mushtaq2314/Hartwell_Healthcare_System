@@ -15,6 +15,12 @@ class PatientBase(BaseModel):
     emergency_contact: str | None = None
     allergies: str | None = None
     chronic_conditions: str | None = None
+    
+    def __repr__(self) -> str:
+        return str(self.model_dump(exclude={"password"}))
+    
+    def __str__(self) -> str:
+        return self.__repr__()
 
 class PatientLogin(BaseModel):
     email: EmailStr
